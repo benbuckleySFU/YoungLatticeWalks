@@ -74,10 +74,17 @@ public class GenerateWalks : MonoBehaviour
         stepColour = new Color(255 * 1.0f / 255, 126 * 1.0f / 255, 0 * 1.0f / 255, 1.0f);
 
         // Create stepset
+        /*
         stepset = new Vector3[3];
         stepset[0] = scale * new Vector3(1, 0, 0);
         stepset[1] = scale * new Vector3(0, 1, 0);
         stepset[2] = scale * new Vector3(0, 0, 1);
+        */
+        stepset = new Vector3[4];
+        stepset[0] = scale * new Vector3(1, 0, 0);
+        stepset[1] = scale * new Vector3(-1, 1, 0);
+        stepset[2] = scale * new Vector3(0, -1, 1);
+        stepset[3] = scale * new Vector3(0, 0, -1);
 
         UnityEngine.Debug.Log("THIS IS A TEST!");
     }
@@ -109,7 +116,7 @@ public class GenerateWalks : MonoBehaviour
 
     void getYoungTableau()
     {
-        youngTableau = new List<List<int>> { new List<int>(), new List<int>(), new List<int>() };
+        youngTableau = new List<List<int>> { new List<int>(), new List<int>(), new List<int>(), new List<int>() };
         // Start with currentWalk
         for (int i = 0; i < currentWalk.Length; i++)
         {
@@ -122,9 +129,13 @@ public class GenerateWalks : MonoBehaviour
             {
                 youngTableau[1].Add(intToAdd);
             }
-            else
+            else if (currentWalk[i].z > 0)
             {
                 youngTableau[2].Add(intToAdd);
+            }
+            else
+            {
+                youngTableau[3].Add(intToAdd);
             }
         }
         // Print it out to make sure I did it right.
@@ -205,7 +216,8 @@ public class GenerateWalks : MonoBehaviour
         for (var i = 0; i < stepSeriesInput.Length; i++)
         {
             position = position + stepSeriesInput[i];
-            if (position.x < position.y || position.y < position.z)
+            //if (position.x < position.y || position.y < position.z)
+            if (position.x < 0 || position.y < 0 || position.z < 0)
             {
                 return false;
             }
